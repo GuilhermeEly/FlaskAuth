@@ -1,0 +1,6 @@
+start_venv.bat
+*.pyc
+.venv
+db.sqlite
+__pycache__
+.vscode
