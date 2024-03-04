@@ -10,10 +10,10 @@ def create_app():
 	app = Flask(__name__)
  
 	db_path = os.path.join(os.path.dirname(__file__), 'db.sqlite')
-	db_uri = 'sqlite:///{}'.format(db_path)
+	db_url = 'sqlite:///{}'.format(db_path)
 
 	app.config['SECRET_KEY'] = 'secret-key-goes-here'
-	app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+	app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 
 	db.init_app(app)
 
