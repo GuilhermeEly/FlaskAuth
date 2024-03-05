@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from .dashboard import DashApp1, DashApp2
 import os
 
 # init SQLAlchemy so we can use it later in our models
@@ -35,5 +36,8 @@ def create_app():
 	# blueprint for non-auth parts of app
 	from .main import main as main_blueprint
 	app.register_blueprint(main_blueprint)
+
+	app = DashApp1.Add_Dash(app)
+	app = DashApp2.Add_Dash(app)
 
 	return app
