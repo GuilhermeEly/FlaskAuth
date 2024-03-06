@@ -4,3 +4,4 @@ start_venv.bat
 db.sqlite
 __pycache__
 .vscode
+style.py
