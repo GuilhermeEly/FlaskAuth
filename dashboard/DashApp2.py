@@ -7,6 +7,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import numpy as np
 from .templates.base import buildLayout 
+from time import sleep
 
 url_base = '/dash/app2/'
 
@@ -17,7 +18,13 @@ graph = html.Div([
         value=10
     ),
     html.Div([
-        dcc.Graph(id='output-graph')
+        dcc.Loading(
+            id="loading-1",
+            type="default",
+            children=html.Div([
+                dcc.Graph(id='output-graph')
+            ], id="loading-output-1")
+        ),
     ], className="card")
 ])
 
@@ -35,6 +42,8 @@ def Add_Dash(server):
     def update_graph(input_number):
         x = np.linspace(0, 10, input_number)
         y = np.sin(x)
+
+        sleep(120)
     
         figure = {
             'data': [{
