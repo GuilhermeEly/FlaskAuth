@@ -6,20 +6,25 @@ from .DashAppNew import apply_layout_with_auth
 import dash_core_components as dcc
 import dash_html_components as html
 import numpy as np
+from .templates.base import buildLayout 
 
 url_base = '/dash/app2/'
 
-layout = html.Div([
+graph = html.Div([
     dcc.Input(
         id='input-number',
         type='number',
         value=10
     ),
-    dcc.Graph(id='output-graph')
+    html.Div([
+        dcc.Graph(id='output-graph')
+    ], className="card")
 ])
 
+layout = buildLayout(body = graph)
+
 def Add_Dash(server):
-    app = Dash(server=server, url_base_pathname=url_base)
+    app = Dash(server=server, url_base_pathname=url_base, assets_folder="./static/styles")
     apply_layout_with_auth(app, layout)
 
     # Define callback

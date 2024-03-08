@@ -7742,7 +7742,7 @@ a.panel-block:hover,label.panel-block:hover{
     }
 }
 .hero.is-primary{
-    background-color:#00d1b2;
+    background-color:#1D3965;
     color:#fff
 }
 .hero.is-primary a:not(.button):not(.dropdown-item):not(.tag),.hero.is-primary strong{
@@ -7766,7 +7766,7 @@ a.panel-block:hover,label.panel-block:hover{
     color:rgba(255,255,255,.7)
 }
 .hero.is-primary .navbar-link.is-active,.hero.is-primary .navbar-link:hover,.hero.is-primary a.navbar-item.is-active,.hero.is-primary a.navbar-item:hover{
-    background-color:#00b89c;
+    background-color:#3464b2;
     color:#fff
 }
 .hero.is-primary .tabs a{
@@ -8179,4 +8179,16 @@ a.panel-block:hover,label.panel-block:hover{
 .footer{
     background-color:#fafafa;
     padding:3rem 1.5rem 6rem
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 40%;
+    border: 1px solid silver;
+    margin: 10px;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }

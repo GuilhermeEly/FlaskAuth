@@ -5,17 +5,22 @@ from dash.dependencies import Input, State, Output
 from .DashAppNew import apply_layout_with_auth
 import dash_core_components as dcc
 import dash_html_components as html
+from .templates.base import buildLayout 
 
 url_base = '/dash/app1/'
 
-layout = html.Div([
-    html.Div('This is dash app1'), html.Br(),
-    dcc.Input(id = 'input_text'), html.Br(), html.Br(),
-    html.Div(id = 'target')
+graph = html.Div([
+    html.Div([
+        html.Div('This is dash app1', style={"width": "50%"}),
+        dcc.Input(id = 'input_text', className="input", style={"margin-left": "50%"}),
+        html.Div(id = 'target')
+    ], style={"width": "100%"})
 ])
 
+layout = buildLayout(body = graph)
+
 def Add_Dash(server):
-    app = Dash(server=server, url_base_pathname=url_base)
+    app = Dash(server=server, url_base_pathname=url_base, assets_folder="./static/styles")
     apply_layout_with_auth(app, layout)
 
     @app.callback(
