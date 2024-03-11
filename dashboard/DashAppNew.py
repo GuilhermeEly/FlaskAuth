@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask_login import current_user
-import dash_html_components as html
+from dash import html
 import uuid
 
 def apply_layout_with_auth(app, layout):

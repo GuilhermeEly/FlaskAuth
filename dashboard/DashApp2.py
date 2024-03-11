@@ -3,8 +3,8 @@
 from dash import Dash
 from dash.dependencies import Input, State, Output
 from .DashAppNew import apply_layout_with_auth
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 import numpy as np
 from .templates.base import buildLayout 
 from time import sleep
