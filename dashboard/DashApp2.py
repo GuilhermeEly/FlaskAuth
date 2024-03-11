@@ -43,7 +43,7 @@ def Add_Dash(server):
         x = np.linspace(0, 10, input_number)
         y = np.sin(x)
 
-        sleep(120)
+        sleep(3)
     
         figure = {
             'data': [{
