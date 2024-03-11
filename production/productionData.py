@@ -131,11 +131,6 @@ class prodData(connectionAlchemy):
                 hora que o produto foi testado
         """
 
-        PASelected = PASelected.replace(' ', '')
-        if PASelected.isdigit()!= True:
-            while len(PASelected) < 15:
-                PASelected += ' '
-
         sql = """
                 SELECT z2.Z2_PRODUTO as PA, z8.ZZ8_NUMEQ as NS, b1.B1_DESC as NOME,
                 z8.ZZ8_TIPO as TIPO, z8.ZZ8_NUMBER as NS_JIGA, z8.ZZ8_STATUS as STATUS,
