@@ -2,6 +2,7 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from .dashboard import DashApp1, DashApp2
+from datetime import timedelta
 import os
 
 # init SQLAlchemy so we can use it later in our models
@@ -15,7 +16,7 @@ def create_app():
 
 	app.config['SECRET_KEY'] = 'secret-key-goes-here'
 	app.config['SQLALCHEMY_DATABASE_URI'] = db_url
-
+	app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
 	db.init_app(app)
 
 	login_manager = LoginManager()

@@ -1,4 +1,4 @@
-from database.connection import connectionAlchemy
+from ..database.connection import connectionAlchemy
 import pandas as pd
 
 class prodData(connectionAlchemy):

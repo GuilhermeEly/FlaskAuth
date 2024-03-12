@@ -7505,7 +7505,7 @@ a.panel-block:hover,label.panel-block:hover{
     align-items:stretch;
     display:flex;
     flex-direction:column;
-    justify-content:space-between
+    justify-content:flex-start
 }
 .hero .navbar{
     background:0 0
@@ -8181,12 +8181,16 @@ a.panel-block:hover,label.panel-block:hover{
     padding:3rem 1.5rem 6rem
 }
 
+.plot {
+    margin:10px;
+    height: 90vh;
+}
+
 .card {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
-    width: 40%;
-    border: 1px solid silver;
-    margin: 10px;
+    width: 100%;
+    border: 1px solid black;
 }
 
 .card:hover {
