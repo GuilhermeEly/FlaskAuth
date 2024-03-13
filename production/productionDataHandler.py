@@ -6,7 +6,7 @@ def getFPYByDate(initial_date, final_date):
     productionDatabase = prodData()
 
     df = productionDatabase.queryFpyByDate(initial_date,final_date)
-    print(df)
+
     if df.empty:
         return df
     
@@ -26,7 +26,7 @@ def getFPYByDate(initial_date, final_date):
 
     # Calculate FPY for each type of test
     fpy_df["FPY"] = (fpy_df[("STATUS", "sum")] / fpy_df[("STATUS", "count")])
-    print(df_unique)
+
     # Rename columns for clarity
     fpy_df.columns = ["PA", "TIPO", "Approved", "Total", "FPY"]
 

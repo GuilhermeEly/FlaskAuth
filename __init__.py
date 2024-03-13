@@ -14,7 +14,7 @@ def create_app():
 	db_path = os.path.join(os.path.dirname(__file__), 'db.sqlite')
 	db_url = 'sqlite:///{}'.format(db_path)
 
-	app.config['SECRET_KEY'] = 'secret-key-goes-here'
+	app.config['SECRET_KEY'] = os.urandom(24)
 	app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 	app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
 	db.init_app(app)
