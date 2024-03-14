@@ -6,3 +6,4 @@ __pycache__
 .vscode
 style.py
 test.py
+bulma.min.css

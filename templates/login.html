@@ -1,37 +1,39 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="column is-4 is-offset-4">
-	<h3 class="title">Login</h3>
+<div class="login-div">
+	
 	<div class="box">
-		{% with messages = get_flashed_messages() %}
-		{% if messages %}
-		<div class="notification is-danger">
-			{{ messages[0] }}
-		</div>
-		{% endif %}
-		{% endwith %}
-		<form method="POST" action="/login">
+		
+		<form class="form-signin" method="POST" action="/login">
+			<h3 class="title">Login</h3>
+			{% with messages = get_flashed_messages() %}
+			{% if messages %}
+			<div class="alert alert-dismissible alert-danger">
+				{{ messages[0] }}
+			</div>
+			{% endif %}
+			{% endwith %}
 			<div class="field">
 				<div class="control">
-					<input class="input is-large" type="email" name="email" placeholder="Email" autofocus="">
+					<input class="form-control" type="email" name="email" placeholder="Email" autofocus="">
 				</div>
 			</div>
 
 			<div class="field">
 				<div class="control">
-					<input class="input is-large" type="password" name="password" placeholder="Senha">
+					<input class="form-control" type="password" name="password" placeholder="Senha">
 				</div>
 			</div>
 
-			<div class="field">
+			<div class="checkbox mb-3">
 				<label class="checkbox">
 					<input type="checkbox">
 					Lembrar
 				</label>
 			</div>
 
-			<button class="button is-block is-info is-large is-fullwidth">Login</button>
+			<button class="btn btn-lg btn-primary btn-block" style="min-width: 500px;">Login</button>
 		</form>
 	</div>
 </div>

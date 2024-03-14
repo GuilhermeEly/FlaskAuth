@@ -1,28 +1,37 @@
 from dash import html
+import dash_bootstrap_components as dbc
 
 def buildLayout(body):
+    navbar = dbc.NavbarSimple(
+        children=[
+            dbc.NavItem(
+                dbc.NavLink("Plot 1", href="/dash/app1", external_link=True)
+            ),
+            dbc.NavItem(
+                dbc.NavLink("Plot 2", href="/dash/app2", external_link=True)
+            ),
+            dbc.NavItem(
+                dbc.NavLink("Perfil", href="/profile", external_link=True)
+            ),
+            dbc.NavItem(
+                dbc.NavLink("Sair", href="/logout", external_link=True)
+            ),
+        ],
+        brand="First Pass Yield",
+        brand_href="",
+        color="primary",
+        dark=True,
+        brand_external_link=True,
+        links_left=False
+    )
 
     layout = html.Div([
-        html.Section([
-            html.Div([
-                html.Nav([
-                    html.Div([
-                        html.Div([
-                            html.Div([
-                                html.A("Inicio",href="/", className="navbar-item"),
-                                html.A("Plot 1",href="/dash/app1", className="navbar-item"),
-                                html.A("Plot 2",href="/dash/app2", className="navbar-item"),
-                                html.A("Perfil",href="/profile", className="navbar-item"),
-                                html.A("Sair",href="/logout", className="navbar-item")
-                            ], className="navbar-end")
-                        ], id = "navbarMenuHeroA", className="navbar-menu")
-                    ], className="container")
-                ], className="navbar")
-            ], className="hero-head"),
-            html.Div([
-                body
-            ])
-        ], className="hero is-primary is-fullheight")
+        html.Div([
+            navbar
+        ]),
+        dbc.CardBody([
+            body
+        ])
     ])
 
     return layout

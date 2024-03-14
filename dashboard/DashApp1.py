@@ -20,7 +20,7 @@ graph = html.Div([
 layout = buildLayout(body = graph)
 
 def Add_Dash(server):
-    app = Dash(server=server, url_base_pathname=url_base, assets_folder="./static/styles")
+    app = Dash(server=server, url_base_pathname=url_base, assets_folder="./static/styles", assets_ignore="bulma.min.css")
     apply_layout_with_auth(app, layout)
 
     @app.callback(

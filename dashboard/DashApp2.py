@@ -10,55 +10,62 @@ from ..production.productionDataHandler import getFPYByDate
 import plotly.express as px
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
+import dash_bootstrap_components as dbc
 
 url_base = '/dash/app2/'
 
+datepicker = dbc.CardHeader(
+                className='Header-Disposition',
+                children = [
+                    dcc.DatePickerRange(
+                        id='date-picker-range',
+                        start_date_placeholder_text='Data início',
+                        end_date_placeholder_text='Data fim',
+                        display_format='DD/MM/YYYY',
+                        minimum_nights=0
+                    ),
+                    html.Button(
+                        id='submit-button-state', 
+                        n_clicks=0, 
+                        children='Submit',
+                        className = 'btn btn-primary',
+                        style={"margin-left":"5px"}
+                    )    
+                ]
+            )
+
 def createLayout():
     graph = html.Div([
-        html.Div(
-            className='Header-Disposition',
-            children =
-            [
-                dcc.DatePickerRange(
-                    id='date-picker-range',
-                    start_date_placeholder_text='Data início',
-                    end_date_placeholder_text='Data fim',
-                    display_format='DD/MM/YYYY',
-                    minimum_nights=0
-                ),
-                html.Button(
-                    id='submit-button-state', 
-                    n_clicks=0, 
-                    children='Submit',
-                    className = 'Submit-Button'
-                )    
-            ]
-        ),
         html.Div([
             html.Div([
-                dcc.Loading(
-                    id="loading-1",
-                    type="default",
-                    children=html.Div([
-                        dcc.Graph(id='output-graph')
-                    ], id="loading-output-1")
-                ),
-            ], className="card"),
+                datepicker,
+                dbc.CardBody([
+                    dcc.Loading(
+                        id="loading-1",
+                        type="default",
+                        children=html.Div([
+                            dcc.Graph(id='output-graph',style={"min-width": "100px", "min-height":"50vh"})
+                        ], id="loading-output-1")
+                    ),
+                ], className="card")
+            ]),
             html.Div([
-                dash_table.DataTable(id="table_infos",
-                    data = [],
-                    editable=True,
-                    filter_action="native",
-                    sort_action="native",
-                    sort_mode='multi',
-                    row_selectable='multi',
-                    row_deletable=True,
-                    selected_rows=[],
-                    page_action='native',
-                    page_current= 0,
-                    page_size= 10
-                )
-            ], className="card")
+                dbc.CardBody([
+                    dash_table.DataTable(id="table_infos",
+                        data = [],
+                        editable=True,
+                        filter_action="native",
+                        sort_action="native",
+                        sort_mode='multi',
+                        row_selectable='multi',
+                        row_deletable=True,
+                        selected_rows=[],
+                        page_action='native',
+                        page_current= 0,
+                        page_size= 10
+                    )
+                ], className="card")
+            ])
         ], className="plot"),
     ])
 
@@ -97,7 +104,7 @@ def Add_Dash(server):
             else:
                 start_date = str((datetime.now() - timedelta(1))).split(" ")[0]
                 end_date = str((datetime.now() - timedelta(1))).split(" ")[0]
-        
+        df = ''
         df = getFPYByDate(str(start_date).replace('-', ''), str(end_date).replace('-', ''))
         if df.empty:
             return {}, start_date, end_date, min_date, max_date, [], None
@@ -105,17 +112,8 @@ def Add_Dash(server):
             figure = px.bar(df, x="PA", y="FPY", color="TIPO", title="First Pass Yield", barmode="group", template="seaborn", hover_data=["NOME", "PA"])
             figure.update_traces(marker_line_color = 'black', marker_line_width = 1)
 
-        # Convert column names to dictionary with 'deletable': False added to each index
-        column_dict = {index: {'name': column, 'deletable': True} for index, column in enumerate(df.columns)}
+        columns = [{"id": index, "name": column, "deletable": False} for index, column in enumerate(df.columns)]
 
-        # Update each dictionary to include 'id': index
-        for index in column_dict:
-            column_dict[index]['id'] = index
-
-        print(column_dict)
-        columns = [{"id": index, "name": column} for index, column in enumerate(df.columns)]
-
-        print(columns)
         df['FPY'] = df['FPY'].apply(lambda x: (round(x * 100, 2)))
         return figure, start_date, end_date, min_date, max_date, columns, df.values
 
