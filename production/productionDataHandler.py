@@ -50,3 +50,73 @@ def getFPYByDate(initial_date, final_date):
     response = res.merge(uniquePAs[["PA","NOME"]], how='left', left_on='PA', right_on='PA')
 
     return response.sort_values(by=["TIPO"])
+
+def getOverallFPY(initial_date, final_date):
+    productionDatabase = prodData()
+
+    df_update_data = productionDatabase.queryFpyByDate(initial_date,final_date)
+
+    df_products = df_update_data.drop_duplicates(subset = ["PA"])
+
+    df_products = df_products.set_index('PA')
+
+    dfrep = df_update_data.loc[(df_update_data['STATUS'] == "R")].drop_duplicates(subset = ["NS"])
+
+    SNRep = dfrep.filter(['NS'], axis=1)
+
+    dfRlyApproved = df_update_data[~df_update_data.NS.isin(SNRep.NS)].drop_duplicates(subset = ["NS"])
+
+    dftest = dfrep.groupby(['PA']).size().reset_index(name='counts')
+
+    dfApprTest = dfRlyApproved.groupby(['PA']).size().reset_index(name='counts')
+
+    dfFinal = pd.merge(dftest, dfApprTest, how='outer', on='PA').fillna(0)
+
+    dfFinal['fpy'] = dfFinal['counts_y'] /( dfFinal['counts_y'] + dfFinal['counts_x'])
+
+    dfFinal['Produzido'] = dfFinal['counts_y'] + dfFinal['counts_x']
+
+    dfFinal.rename(columns={"counts_y": "Aprovadas", "counts_x": "Reprovadas"}, inplace=True)
+
+    dfFinal[['PA', 'fpy']].fillna(0)
+
+    dfFinal = dfFinal.sort_values(by=['fpy'])
+
+    dfFinal.loc[(dfFinal['fpy'] == 0), 'fpy'] = 0.005
+
+    dfFinal = dfFinal[(dfFinal['fpy'] >= float(0)/100.0) & (dfFinal['fpy'] <= float(100)/100.0)]
+
+    dfFinal['PA'] = dfFinal['PA'].map(str)
+
+    dfFinal['fpy'] = dfFinal['fpy'].astype(float).map("{:.2%}".format)
+
+    dfFinal = dfFinal.join(df_products, on='PA')
+
+    dfFinal = dfFinal[dfFinal['Produzido']>10]
+
+    FPY_Total = (dfFinal['Aprovadas'].sum() /( dfFinal['Aprovadas'].sum() + dfFinal['Reprovadas'].sum()))*100
+
+    return FPY_Total
+
+def getNewOverallFPY(initial_date, final_date):
+
+    df = getFPYByDate(initial_date=initial_date, final_date=final_date)
+
+    approved = df.loc[df['TIPO'] == "1", 'Approved'].sum()
+    total = df.loc[df['TIPO'] == "1", 'Total'].sum()
+    fpy1 = approved/total
+
+    approved = df.loc[df['TIPO'] == "2", 'Approved'].sum()
+    total = df.loc[df['TIPO'] == "2", 'Total'].sum()
+    fpy2 = approved/total
+
+    if (df.loc[df['TIPO'] == "3"]).empty:
+        fpy = fpy1*fpy2
+        pass
+    else:
+        approved = df.loc[df['TIPO'] == "3", 'Approved'].sum()
+        total = df.loc[df['TIPO'] == "3", 'Total'].sum()
+        fpy3 = approved/total
+        fpy = fpy1*fpy2*fpy3
+
+    return fpy
