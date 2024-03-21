@@ -12,3 +12,12 @@
   border-radius: 4px 0 0 4px;
   border: 1px solid #ccc !important;
 }
+
+.choosenPA {
+  width:200px;
+  height:40px;
+  margin-left: 10px;
+  vertical-Align:middle;
+  font-size:22px;
+  border:1px solid #dbdbdb;
+}

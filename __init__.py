@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-from .dashboard import DashApp1, DashApp2, appDashboard
+from .dashboard import DashApp1, appFpy, appDashboard, appFailCauses
 from datetime import timedelta
 import os
 
@@ -40,7 +40,8 @@ def create_app():
 	app.register_blueprint(main_blueprint)
 
 	app = DashApp1.Add_Dash(app)
-	app = DashApp2.Add_Dash(app)
+	app = appFpy.Add_Dash(app)
 	app = appDashboard.Add_Dash(app)
+	app = appFailCauses.Add_Dash(app)
 
 	return app

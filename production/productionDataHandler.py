@@ -120,3 +120,25 @@ def getNewOverallFPY(initial_date, final_date):
         fpy = fpy1*fpy2*fpy3
 
     return fpy
+
+def get_causes_by_PA(start_date, end_date, PA):
+
+    fetch = prodData()
+
+    start_date = start_date.replace('-', '')
+    end_date = end_date.replace('-', '')
+
+    df_update_data = fetch.queryFailCauses(startDate=start_date, endDate=end_date, PASelected=PA)
+
+    dfREP = df_update_data[df_update_data.STATUS != 'A']
+
+    dfttREP = dfREP.drop_duplicates(subset=['NS'], keep='first')
+
+    #apenas a primeira reprovação em cada tentativa
+    dfReprovations = dfREP.drop_duplicates(subset=['NS','DATA','HORA'], keep='first')
+
+    dftest = dfttREP.groupby(['STEP','STATUS']).size().reset_index(name='Reprovações')
+
+    dfFinal = dftest.sort_values(by=['Reprovações'], ascending=False)
+
+    return dfFinal, dfReprovations

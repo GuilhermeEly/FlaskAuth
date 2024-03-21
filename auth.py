@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
@@ -8,7 +8,10 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login')
 def login():
-	return render_template('login.html')
+	if current_user and current_user.is_authenticated:
+		return redirect("/dash/dashboard/")
+	else:
+		return render_template('login.html')
 
 @auth.route('/login', methods=['POST'])
 def login_post():
@@ -26,7 +29,7 @@ def login_post():
 
 	# if the above check passes, then we know the user has the right credentials
 	login_user(user, remember=remember)
-	return redirect("/dash/app2/")
+	return redirect("/dash/dashboard/")
 
 @auth.route('/signup')
 def signup():

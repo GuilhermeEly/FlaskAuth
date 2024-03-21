@@ -12,7 +12,7 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 import dash_bootstrap_components as dbc
 
-url_base = '/dash/app2/'
+url_base = '/dash/fpy/'
 
 datepicker = dbc.CardHeader(
                 className='Header-Disposition',

@@ -5,10 +5,13 @@ def buildLayout(body):
     navbar = dbc.NavbarSimple(
         children=[
             dbc.NavItem(
-                dbc.NavLink("Plot 1", href="/dash/app1", external_link=True)
+                dbc.NavLink("Dashboard", href="/dash/dashboard", external_link=True)
             ),
             dbc.NavItem(
-                dbc.NavLink("Plot 2", href="/dash/app2", external_link=True)
+                dbc.NavLink("Fpy", href="/dash/fpy", external_link=True)
+            ),
+            dbc.NavItem(
+                dbc.NavLink("Causas", href="/dash/failcauses", external_link=True)
             ),
             dbc.NavItem(
                 dbc.NavLink("Perfil", href="/profile", external_link=True)
