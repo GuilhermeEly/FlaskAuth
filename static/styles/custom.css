@@ -21,3 +21,9 @@
   font-size:22px;
   border:1px solid #dbdbdb;
 }
+
+.DivGraph {
+  border: 2px solid #00000014;
+  height: 100%;
+  max-width: 100vh;
+}

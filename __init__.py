@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-from .dashboard import DashApp1, appFpy, appDashboard, appFailCauses
+from .dashboard import appFpy, appDashboard, appFailCauses
 from datetime import timedelta
 import os
 
@@ -11,17 +11,17 @@ db = SQLAlchemy()
 def create_app():
 	app = Flask(__name__)
 
-	db_path = os.path.join(os.path.dirname(__file__), 'db.sqlite')
-	db_url = 'sqlite:///{}'.format(db_path)
+	db_path = os.path.join(os.path.dirname(__file__), "db.sqlite")
+	db_url = "sqlite:///{}".format(db_path)
 
-	#app.config['SECRET_KEY'] = os.urandom(24)
-	app.config['SECRET_KEY'] = "secret-key"
-	app.config['SQLALCHEMY_DATABASE_URI'] = db_url
-	app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
+	#app.config["SECRET_KEY"] = os.urandom(24)
+	app.config["SECRET_KEY"] = "secret-key"
+	app.config["SQLALCHEMY_DATABASE_URI"] = db_url
+	app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=31)
 	db.init_app(app)
 
 	login_manager = LoginManager()
-	login_manager.login_view = 'auth.login'
+	login_manager.login_view = "auth.login"
 	login_manager.init_app(app)
 
 	from .models import User
@@ -39,7 +39,6 @@ def create_app():
 	from .main import main as main_blueprint
 	app.register_blueprint(main_blueprint)
 
-	app = DashApp1.Add_Dash(app)
 	app = appFpy.Add_Dash(app)
 	app = appDashboard.Add_Dash(app)
 	app = appFailCauses.Add_Dash(app)

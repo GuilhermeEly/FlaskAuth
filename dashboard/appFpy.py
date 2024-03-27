@@ -12,23 +12,23 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 import dash_bootstrap_components as dbc
 
-url_base = '/dash/fpy/'
+url_base = "/dash/fpy/"
 
 datepicker = dbc.CardHeader(
-                className='Header-Disposition',
+                className="Header-Disposition",
                 children = [
                     dcc.DatePickerRange(
-                        id='date-picker-range',
-                        start_date_placeholder_text='Data início',
-                        end_date_placeholder_text='Data fim',
-                        display_format='DD/MM/YYYY',
+                        id="date-picker-range",
+                        start_date_placeholder_text="Data início",
+                        end_date_placeholder_text="Data fim",
+                        display_format="DD/MM/YYYY",
                         minimum_nights=0
                     ),
                     html.Button(
-                        id='submit-button-state', 
+                        id="submit-button-state", 
                         n_clicks=0, 
-                        children='Submit',
-                        className = 'btn btn-primary',
+                        children="Submit",
+                        className = "btn btn-primary",
                         style={"margin-left":"5px"}
                     )    
                 ]
@@ -44,7 +44,7 @@ def createLayout():
                         id="loading-1",
                         type="default",
                         children=html.Div([
-                            dcc.Graph(id='output-graph',style={"min-width": "100px", "min-height":"50vh"})
+                            dcc.Graph(id="output-graph",style={"min-width": "100px", "min-height":"50vh"})
                         ], id="loading-output-1")
                     ),
                 ], className="card")
@@ -56,11 +56,11 @@ def createLayout():
                         editable=True,
                         filter_action="native",
                         sort_action="native",
-                        sort_mode='multi',
-                        row_selectable='multi',
+                        sort_mode="multi",
+                        row_selectable="multi",
                         row_deletable=True,
                         selected_rows=[],
-                        page_action='native',
+                        page_action="native",
                         page_current= 0,
                         page_size= 10
                     )
@@ -79,18 +79,18 @@ def Add_Dash(server):
 
     # Define callback
     @app.callback(
-    [Output('output-graph', 'figure'),
-     Output('date-picker-range', 'start_date'),
-     Output('date-picker-range', 'end_date'),
-     Output('date-picker-range', 'min_date_allowed'),
-     Output('date-picker-range', 'max_date_allowed'),
-     Output('table_infos', 'columns'),
-     Output('table_infos', 'data')],
-    [Input('submit-button-state', 'n_clicks')],
-    [State('date-picker-range', 'start_date'),
-     State('date-picker-range', 'end_date')]
+    [Output("output-graph", "figure"),
+     Output("date-picker-range", "start_date"),
+     Output("date-picker-range", "end_date"),
+     Output("date-picker-range", "min_date_allowed"),
+     Output("date-picker-range", "max_date_allowed"),
+     Output("table_infos", "columns"),
+     Output("table_infos", "data")],
+    [Input("submit-button-state", "n_clicks")],
+    [State("date-picker-range", "start_date"),
+     State("date-picker-range", "end_date")]
     )
-    def update_graph(n_clicks,start_date,end_date):
+    def update_graph(n_clicks, start_date, end_date):
         today = datetime.now().date()
         min_date = today - relativedelta(years=5)
         max_date = today - timedelta(days=1)
@@ -104,17 +104,17 @@ def Add_Dash(server):
             else:
                 start_date = str((datetime.now() - timedelta(1))).split(" ")[0]
                 end_date = str((datetime.now() - timedelta(1))).split(" ")[0]
-        df = ''
-        df = getFPYByDate(str(start_date).replace('-', ''), str(end_date).replace('-', ''))
+        df = ""
+        df = getFPYByDate(str(start_date).replace("-", ""), str(end_date).replace("-", ""))
         if df.empty:
             return {}, start_date, end_date, min_date, max_date, [], None
         else:
             figure = px.bar(df, x="PA", y="FPY", color="TIPO", title="First Pass Yield", barmode="group", template="seaborn", hover_data=["NOME", "PA"])
-            figure.update_traces(marker_line_color = 'black', marker_line_width = 1)
+            figure.update_traces(marker_line_color = "black", marker_line_width = 1)
 
         columns = [{"id": index, "name": column, "deletable": False} for index, column in enumerate(df.columns)]
 
-        df['FPY'] = df['FPY'].apply(lambda x: (round(x * 100, 2)))
+        df["FPY"] = df["FPY"].apply(lambda x: (round(x * 100, 2)))
         return figure, start_date, end_date, min_date, max_date, columns, df.values
 
     return app.server
